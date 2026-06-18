@@ -17,6 +17,29 @@ class AmeenApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Ameen',
+      builder: (context, child) {
+        return Stack(
+          children: [
+            child!,
+            Positioned(
+              right: 16,
+              bottom: 24,
+              child: SafeArea(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: FloatingActionButton(
+                    heroTag: null,
+                    backgroundColor: const Color(0xFFD6A94A),
+                    foregroundColor: Colors.black,
+                    onPressed: () {},
+                    child: const Icon(Icons.mic),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
       theme: ThemeData(
         fontFamily: 'Arial',
         scaffoldBackgroundColor: const Color(0xFF0B1117),

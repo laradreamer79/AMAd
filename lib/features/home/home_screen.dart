@@ -57,24 +57,6 @@ class HomeScreen extends StatelessWidget {
                 _QuickAction(icon: Icons.widgets, title: 'Products'),
               ],
             ),
-
-            const SizedBox(height: 24),
-
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A2430),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.mic, color: Color(0xFFD6A94A)),
-                  SizedBox(width: 12),
-                  Text('Ask Ameen', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-            ),
           ],
         ),
       ),
