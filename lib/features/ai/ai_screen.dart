@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AiScreen extends StatelessWidget {
-  const AiScreen({Key? key}) : super(key: key);
+  const AiScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

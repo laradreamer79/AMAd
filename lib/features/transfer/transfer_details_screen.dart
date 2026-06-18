@@ -6,10 +6,10 @@ class TransferDetailsScreen extends StatefulWidget {
   final String transferType;
 
   const TransferDetailsScreen({
-    Key? key,
+    super.key,
     required this.beneficiary,
     required this.transferType,
-  }) : super(key: key);
+  });
 
   @override
   State<TransferDetailsScreen> createState() => _TransferDetailsScreenState();
@@ -26,13 +26,7 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
     'SA **** **** **** 3344',
   ];
 
-  final _reasonOptions = [
-    'Bills',
-    'Salary',
-    'Gift',
-    'Family Support',
-    'Other',
-  ];
+  final _reasonOptions = ['Bills', 'Salary', 'Gift', 'Family Support', 'Other'];
 
   @override
   void dispose() {
@@ -63,7 +57,9 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
   Widget build(BuildContext context) {
     final beneficiaryParts = widget.beneficiary.split(' - ');
     final beneficiaryName = beneficiaryParts.first;
-    final beneficiaryAccount = beneficiaryParts.length > 1 ? beneficiaryParts.last : widget.beneficiary;
+    final beneficiaryAccount = beneficiaryParts.length > 1
+        ? beneficiaryParts.last
+        : widget.beneficiary;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Transfer Details')),
@@ -72,7 +68,10 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Beneficiary', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Beneficiary',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
@@ -85,24 +84,39 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(beneficiaryName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                    beneficiaryName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 8),
-                  Text('Account: $beneficiaryAccount', style: const TextStyle(color: Colors.white70)),
+                  Text(
+                    'Account: $beneficiaryAccount',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
                   const SizedBox(height: 8),
-                  Text('Transfer type: ${widget.transferType}', style: const TextStyle(color: Colors.white70)),
+                  Text(
+                    'Transfer type: ${widget.transferType}',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
             DropdownButtonFormField<String>(
-              value: _transferFrom,
+              initialValue: _transferFrom,
               decoration: const InputDecoration(
                 labelText: 'Transfer from',
                 border: OutlineInputBorder(),
               ),
               hint: const Text('Select source account'),
               items: _transferFromOptions
-                  .map((option) => DropdownMenuItem(value: option, child: Text(option)))
+                  .map(
+                    (option) =>
+                        DropdownMenuItem(value: option, child: Text(option)),
+                  )
                   .toList(),
               onChanged: (value) => setState(() => _transferFrom = value),
             ),
@@ -118,14 +132,17 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _reason,
+              initialValue: _reason,
               decoration: const InputDecoration(
                 labelText: 'Reason for transfer',
                 border: OutlineInputBorder(),
               ),
               hint: const Text('Select reason'),
               items: _reasonOptions
-                  .map((option) => DropdownMenuItem(value: option, child: Text(option)))
+                  .map(
+                    (option) =>
+                        DropdownMenuItem(value: option, child: Text(option)),
+                  )
                   .toList(),
               onChanged: (value) => setState(() => _reason = value),
             ),

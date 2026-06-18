@@ -10,87 +10,75 @@ class HomeScreen extends StatelessWidget {
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Good afternoon', style: TextStyle(color: Colors.white70)),
-              const SizedBox(height: 4),
-              const Text(
-                'Lara',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 24),
-
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF141B24),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white10),
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('SA **** **** **** 9012', style: TextStyle(color: Colors.white54)),
-                    SizedBox(height: 18),
-                    Text('TOTAL BALANCE', style: TextStyle(color: Colors.white54)),
-                    SizedBox(height: 8),
-                    Text(
-                      '47,320.84 SAR',
-                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              const Text(
-                'Quick Actions',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 34),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _QuickAction(
-                    icon: Icons.swap_horiz,
-                    title: 'Transfer',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const TransferScreen()),
-                    ),
+                  Text(
+                    'SA **** **** **** 9012',
+                    style: TextStyle(color: Colors.white54),
                   ),
-                  _QuickAction(icon: Icons.receipt_long, title: 'Bills'),
-                  _QuickAction(icon: Icons.credit_card, title: 'Cards'),
-                  _QuickAction(icon: Icons.widgets, title: 'Products'),
+                  SizedBox(height: 16),
+                  Text(
+                    '47,320.84 SAR',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
+            ),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 18),
 
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A2430),
-                  borderRadius: BorderRadius.circular(20),
+            const Text(
+              'Quick Actions',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _QuickAction(
+                  icon: Icons.swap_horiz,
+                  title: 'Transfer',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const TransferScreen()),
+                  ),
                 ),
-                child: const Row(
-                  children: [
-                    Icon(Icons.mic, color: Color(0xFFD6A94A)),
-                    SizedBox(width: 12),
-                    Text('Ask Ameen', style: TextStyle(fontSize: 16)),
-                  ],
-                ),
+                _QuickAction(icon: Icons.receipt_long, title: 'Bills'),
+                _QuickAction(icon: Icons.credit_card, title: 'Cards'),
+                _QuickAction(icon: Icons.widgets, title: 'Products'),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A2430),
+                borderRadius: BorderRadius.circular(20),
               ),
-            ],
-          ),
+              child: const Row(
+                children: [
+                  Icon(Icons.mic, color: Color(0xFFD6A94A)),
+                  SizedBox(width: 12),
+                  Text('Ask Ameen', style: TextStyle(fontSize: 16)),
+                ],
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -99,11 +87,7 @@ class _QuickAction extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
 
-  const _QuickAction({
-    required this.icon,
-    required this.title,
-    this.onTap,
-  });
+  const _QuickAction({required this.icon, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +105,10 @@ class _QuickAction extends StatelessWidget {
             child: Icon(icon, color: const Color(0xFFD6A94A)),
           ),
           const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontSize: 12, color: Colors.white70)),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 12, color: Colors.white70),
+          ),
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SuccessScreen extends StatelessWidget {
-  const SuccessScreen({Key? key}) : super(key: key);
+  const SuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,10 @@ class SuccessScreen extends StatelessWidget {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 80),
             const SizedBox(height: 16),
-            const Text('Transfer Successful', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text(
+              'Transfer Successful',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => Navigator.popUntil(context, (r) => r.isFirst),

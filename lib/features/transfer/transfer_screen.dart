@@ -3,7 +3,7 @@ import 'beneficiary_screen.dart';
 import 'transfer_details_screen.dart';
 
 class TransferScreen extends StatefulWidget {
-  const TransferScreen({Key? key}) : super(key: key);
+  const TransferScreen({super.key});
 
   @override
   State<TransferScreen> createState() => _TransferScreenState();
@@ -17,17 +17,17 @@ class _TransferScreenState extends State<TransferScreen> {
       context,
       MaterialPageRoute(builder: (_) => const BeneficiaryScreen()),
     );
-    if (result != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => TransferDetailsScreen(
-            beneficiary: result,
-            transferType: _transferType!,
-          ),
+    if (!mounted || result == null) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TransferDetailsScreen(
+          beneficiary: result,
+          transferType: _transferType!,
         ),
-      );
-    }
+      ),
+    );
   }
 
   void _selectTransferType(String type) {
@@ -46,7 +46,9 @@ class _TransferScreenState extends State<TransferScreen> {
         decoration: BoxDecoration(
           color: selected ? const Color(0xFFD6A94A) : const Color(0xFF141B24),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: selected ? const Color(0xFFB48A3C) : Colors.white12),
+          border: Border.all(
+            color: selected ? const Color(0xFFB48A3C) : Colors.white12,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,7 +66,11 @@ class _TransferScreenState extends State<TransferScreen> {
                 ),
               ],
             ),
-            Icon(Icons.arrow_forward_ios, size: 16, color: selected ? Colors.black : Colors.white54),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: selected ? Colors.black : Colors.white54,
+            ),
           ],
         ),
       ),
@@ -80,7 +86,10 @@ class _TransferScreenState extends State<TransferScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Transfer type', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'Transfer type',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 16),
             _buildTransferTypeOption('Local', Icons.public),
             const SizedBox(height: 12),

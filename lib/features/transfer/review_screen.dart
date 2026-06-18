@@ -9,13 +9,13 @@ class ReviewScreen extends StatelessWidget {
   final String reference;
 
   const ReviewScreen({
-    Key? key,
+    super.key,
     required this.beneficiary,
     required this.amount,
     this.note = '',
     required this.transferType,
     required this.reference,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,10 @@ class ReviewScreen extends StatelessWidget {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const OtpScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const OtpScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFD6A94A),

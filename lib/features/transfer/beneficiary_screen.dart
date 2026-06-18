@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BeneficiaryScreen extends StatefulWidget {
-  const BeneficiaryScreen({Key? key}) : super(key: key);
+  const BeneficiaryScreen({super.key});
 
   @override
   State<BeneficiaryScreen> createState() => _BeneficiaryScreenState();
@@ -49,7 +49,7 @@ class _BeneficiaryScreenState extends State<BeneficiaryScreen> {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: beneficiaries.length + (_showAll ? 0 : 1),
-              separatorBuilder: (_, __) => const Divider(),
+              separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
                 if (!_showAll && index == beneficiaries.length) {
                   return Padding(

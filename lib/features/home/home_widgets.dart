@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Add reusable widgets used by the Home feature here.
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({Key? key}) : super(key: key);
+  const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
