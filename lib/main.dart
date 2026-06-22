@@ -5,6 +5,8 @@ import 'features/home/home_screen.dart';
 import 'features/products/products_screen.dart';
 import 'features/transfer/transfer_screen.dart';
 
+const double _assistantButtonBottomOffset = kBottomNavigationBarHeight + 40;
+
 void main() {
   runApp(const AmeenApp());
 }
@@ -23,7 +25,7 @@ class AmeenApp extends StatelessWidget {
             child!,
             Positioned(
               right: 16,
-              bottom: 24,
+              bottom: _assistantButtonBottomOffset,
               child: SafeArea(
                 child: Material(
                   type: MaterialType.transparency,
