@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class BeneficiaryScreen extends StatefulWidget {
-  const BeneficiaryScreen({super.key});
+  final String? assistantBeneficiary;
+
+  const BeneficiaryScreen({super.key, this.assistantBeneficiary});
 
   @override
   State<BeneficiaryScreen> createState() => _BeneficiaryScreenState();
@@ -22,6 +24,30 @@ class _BeneficiaryScreenState extends State<BeneficiaryScreen> {
 
   List<String> get _visibleBeneficiaries {
     return _showAll ? _allBeneficiaries : _allBeneficiaries.take(3).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _runAssistantFlow());
+  }
+
+  Future<void> _runAssistantFlow() async {
+    final beneficiary = widget.assistantBeneficiary;
+    if (beneficiary == null || !mounted) return;
+
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+    if (!mounted) return;
+
+    if (!_visibleBeneficiaries.contains(beneficiary)) {
+      setState(() {
+        _showAll = true;
+      });
+      await Future<void>.delayed(const Duration(milliseconds: 700));
+      if (!mounted) return;
+    }
+
+    _selectBeneficiary(beneficiary);
   }
 
   void _selectBeneficiary(String beneficiary) {
@@ -66,10 +92,14 @@ class _BeneficiaryScreenState extends State<BeneficiaryScreen> {
                 }
 
                 final name = beneficiaries[index];
+                final selected = widget.assistantBeneficiary == name;
                 return ListTile(
                   title: Text(name),
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  selected: selected,
+                  selectedTileColor: const Color(0x332A241A),
+                  selectedColor: const Color(0xFFD6A94A),
                   onTap: () => _selectBeneficiary(name),
                 );
               },

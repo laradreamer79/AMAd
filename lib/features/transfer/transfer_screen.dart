@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import '../ai/ai_service.dart';
 import 'beneficiary_screen.dart';
 import 'transfer_details_screen.dart';
 
 class TransferScreen extends StatefulWidget {
-  const TransferScreen({super.key});
+  final TransferAssistantDraft? assistantDraft;
+
+  const TransferScreen({super.key, this.assistantDraft});
 
   @override
   State<TransferScreen> createState() => _TransferScreenState();
@@ -11,11 +14,44 @@ class TransferScreen extends StatefulWidget {
 
 class _TransferScreenState extends State<TransferScreen> {
   String? _transferType;
+  bool _assistantStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _runAssistantFlow());
+  }
+
+  Future<void> _runAssistantFlow() async {
+    final draft = widget.assistantDraft;
+    if (_assistantStarted || draft == null || !draft.isReady || !mounted) {
+      return;
+    }
+
+    _assistantStarted = true;
+    await Future<void>.delayed(const Duration(milliseconds: 600));
+    if (!mounted) return;
+
+    setState(() {
+      _transferType = draft.transferType;
+    });
+
+    await Future<void>.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+    await _chooseBeneficiary();
+  }
 
   Future<void> _chooseBeneficiary() async {
+    final draft = widget.assistantDraft;
     final result = await Navigator.push<String?>(
       context,
-      MaterialPageRoute(builder: (_) => const BeneficiaryScreen()),
+      MaterialPageRoute(
+        builder: (_) => BeneficiaryScreen(
+          assistantBeneficiary: draft?.isReady == true
+              ? draft!.beneficiary
+              : null,
+        ),
+      ),
     );
     if (!mounted || result == null) return;
 
@@ -25,6 +61,7 @@ class _TransferScreenState extends State<TransferScreen> {
         builder: (_) => TransferDetailsScreen(
           beneficiary: result,
           transferType: _transferType!,
+          assistantDraft: draft?.isReady == true ? draft : null,
         ),
       ),
     );

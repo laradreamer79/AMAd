@@ -4,7 +4,7 @@ Ameen is a Flutter banking app prototype. It presents a dark themed mobile banki
 
 ## Current App Structure
 
-The app starts from `lib/main.dart` and uses a bottom navigation layout with these main sections:
+The app starts from `lib/main.dart` with a simple login and demo OTP flow. After login, it opens the authenticated app shell in `lib/main_screen.dart`, which uses a bottom navigation layout with these main sections:
 
 - Home
 - Transfer
@@ -15,6 +15,23 @@ The app starts from `lib/main.dart` and uses a bottom navigation layout with the
 The app theme uses a dark background with gold accent colors.
 
 ## Current Pages
+
+### Login
+
+Files:
+
+- `lib/features/auth/login_screen.dart`
+- `lib/features/auth/login_otp_screen.dart`
+
+Current login flow:
+
+1. Enter the demo username `lara`.
+2. Enter the demo password `123456`.
+3. Firebase sends an SMS OTP to the saved phone number in `login_screen.dart`.
+4. Enter the SMS OTP from your phone.
+5. Open the main banking app.
+
+Before testing, replace `_savedPhoneNumber` in `lib/features/auth/login_screen.dart` with your real phone number in international format, for example `+9665XXXXXXXX`.
 
 ### Home
 
@@ -129,13 +146,14 @@ The Store page is currently a placeholder screen.
 
 File: `lib/main.dart`
 
-The app includes a floating microphone button positioned above the bottom navigation bar. The button is currently visual only and does not open a completed assistant flow yet.
+The authenticated app shell includes a floating microphone button positioned above the bottom navigation bar. The button is currently visual only and does not open a completed assistant flow yet.
 
 ## Current Services
 
 Implemented or partially implemented services:
 
 - Account overview and account opening
+- Simple login with Firebase phone OTP verification
 - Transfer flow with review, OTP, and success
 - Bill payment flow with categories, saved bills, review, OTP, and success
 - Service shortcut grid
@@ -200,6 +218,7 @@ dart format lib
 ## Notes
 
 - This is currently a prototype with local sample data.
-- No backend, authentication service, or real payment integration is connected yet.
-- OTP screens validate only that 6 digits are entered.
+- No custom backend or real payment integration is connected yet.
+- Login OTP is verified through Firebase Phone Authentication.
+- Transfer, account, and bill OTP screens still validate only that 6 digits are entered.
 - Most service data is hardcoded in the Flutter screens and models.

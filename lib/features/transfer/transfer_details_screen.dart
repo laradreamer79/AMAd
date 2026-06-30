@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import '../ai/ai_service.dart';
 import 'review_screen.dart';
 
 class TransferDetailsScreen extends StatefulWidget {
   final String beneficiary;
   final String transferType;
+  final TransferAssistantDraft? assistantDraft;
 
   const TransferDetailsScreen({
     super.key,
     required this.beneficiary,
     required this.transferType,
+    this.assistantDraft,
   });
 
   @override
@@ -29,10 +32,35 @@ class _TransferDetailsScreenState extends State<TransferDetailsScreen> {
   final _reasonOptions = ['Bills', 'Salary', 'Gift', 'Family Support', 'Other'];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _runAssistantFlow());
+  }
+
+  @override
   void dispose() {
     _amountCtrl.dispose();
     _noteCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _runAssistantFlow() async {
+    final draft = widget.assistantDraft;
+    if (draft == null || !draft.isReady || !mounted) return;
+
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+    if (!mounted) return;
+
+    setState(() {
+      _transferFrom = _transferFromOptions.first;
+      _amountCtrl.text = draft.amount!;
+      _reason = draft.reason;
+      _noteCtrl.text = draft.note;
+    });
+
+    await Future<void>.delayed(const Duration(milliseconds: 1100));
+    if (!mounted) return;
+    _next();
   }
 
   void _next() {
