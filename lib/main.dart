@@ -14,6 +14,7 @@ import 'features/transfer/providers/transfer_provider.dart';
 import 'features/auth/providers/auth_provider.dart';
 import 'features/auth/screens/lock_screen.dart';
 import 'features/profile/screens/profile_screen.dart';
+import 'features/services/services_screen.dart';
 import 'core/widgets/animated_bottom_nav.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -85,6 +86,7 @@ class _MainScreenState extends State<MainScreen> {
     const BillsScreen(),
     const CardsScreen(),
     const ProductsScreen(),
+    const ServicesScreen(),
     const ProfileScreen(),
   ];
 
@@ -122,6 +124,7 @@ class _MainScreenState extends State<MainScreen> {
           NavItemData(icon: Icons.receipt_long, label: lang.t('bills')),
           NavItemData(icon: Icons.credit_card, label: lang.t('cards')),
           NavItemData(icon: Icons.widgets, label: lang.t('products')),
+          NavItemData(icon: Icons.grid_view, label: lang.t('services')),
           NavItemData(icon: Icons.person_outline, label: lang.t('profile')),
         ],
       ),

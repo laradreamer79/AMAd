@@ -104,8 +104,25 @@ void main() {
 
     await tester.tap(find.byType(FloatingActionButton));
     await tester.pumpAndSettle();
-    expect(find.text('Finance'), findsOneWidget);
+    expect(find.textContaining('banking assistant'), findsOneWidget);
     expect(find.byTooltip('Back'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'Show my balance');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+    expect(find.text('Show my balance'), findsOneWidget);
+    expect(find.textContaining('demo mode'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Back'));
+    await tester.pumpAndSettle();
+
+    final servicesTab = find.descendant(
+      of: find.byType(AnimatedBottomNav),
+      matching: find.byIcon(Icons.grid_view),
+    );
+    await tester.tap(servicesTab);
+    await tester.pumpAndSettle();
+    expect(find.text('Finance'), findsOneWidget);
   });
 
   testWidgets('Saved bill opens the complete payment flow', (

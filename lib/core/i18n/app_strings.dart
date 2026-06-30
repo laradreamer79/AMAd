@@ -10,6 +10,7 @@ class AppStrings {
       'cards': 'Cards',
       'products': 'Products',
       'ai': 'AI',
+      'services': 'Services',
       'home': 'Home',
       'quick_actions': 'Quick Actions',
       'total_balance': 'TOTAL BALANCE',
@@ -21,6 +22,15 @@ class AppStrings {
       'bills_screen': 'Bills Screen',
       'products_screen': 'Products Screen',
       'ai_screen': 'AI Screen',
+      'ai_welcome':
+          'Hello Lara! I am Ameen, your banking assistant. How can I help you today?',
+      'ai_transfer_help': 'Help with a transfer',
+      'ai_bill_help': 'Help with a bill',
+      'ai_card_help': 'Help with cards',
+      'ai_hint': 'Ask Ameen...',
+      'ai_send': 'Send',
+      'ai_demo_response':
+          'I can guide you through that. This assistant is currently running in demo mode.',
 
       // Cards feature
       'my_cards': 'Cards',
@@ -161,6 +171,7 @@ class AppStrings {
       'cards': 'البطاقات',
       'products': 'المنتجات',
       'ai': 'الذكاء الاصطناعي',
+      'services': 'الخدمات',
       'home': 'الرئيسية',
       'quick_actions': 'إجراءات سريعة',
       'total_balance': 'الرصيد الإجمالي',
@@ -172,6 +183,15 @@ class AppStrings {
       'bills_screen': 'شاشة الفواتير',
       'products_screen': 'شاشة المنتجات',
       'ai_screen': 'شاشة الذكاء الاصطناعي',
+      'ai_welcome':
+          'مرحبًا لارا! أنا أمين، مساعدك البنكي. كيف أقدر أساعدك اليوم؟',
+      'ai_transfer_help': 'مساعدة في التحويل',
+      'ai_bill_help': 'مساعدة في فاتورة',
+      'ai_card_help': 'مساعدة في البطاقات',
+      'ai_hint': 'اسأل أمين...',
+      'ai_send': 'إرسال',
+      'ai_demo_response':
+          'أقدر أساعدك خطوة بخطوة. المساعد يعمل حاليًا بالوضع التجريبي.',
 
       // Cards feature
       'my_cards': 'البطاقات',
