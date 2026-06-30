@@ -1,9 +1,5 @@
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../main_screen.dart';
 import 'login_otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,33 +12,20 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static const _demoUsername = 'lara';
   static const _demoPassword = '123456';
-  static const _useFirebaseOtp = false;
 
-  // Replace this with your real saved phone number, for example +9665XXXXXXXX.
   static const _savedPhoneNumber = '+966543889380';
 
   final _usernameController = TextEditingController(text: _demoUsername);
   final _passwordController = TextEditingController(text: _demoPassword);
-  bool _isSendingOtp = false;
-  Timer? _sendOtpTimer;
 
   @override
   void dispose() {
-    _sendOtpTimer?.cancel();
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _stopSendingOtp() {
-    _sendOtpTimer?.cancel();
-    _sendOtpTimer = null;
-    if (mounted) {
-      setState(() => _isSendingOtp = false);
-    }
-  }
-
-  Future<void> _login() async {
+  void _login() {
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
     if (username != _demoUsername || password != _demoPassword) {
@@ -52,89 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (!_useFirebaseOtp) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => LoginOtpScreen(
-            phoneNumber: _savedPhoneNumber,
-            verificationId: LoginOtpScreen.demoVerificationId,
-          ),
-        ),
-      );
-      return;
-    }
-
-    if (_savedPhoneNumber.contains('X')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Replace the saved phone number in login_screen.dart.'),
-        ),
-      );
-      return;
-    }
-
-    setState(() => _isSendingOtp = true);
-
-    _sendOtpTimer = Timer(const Duration(seconds: 30), () {
-      if (!mounted || !_isSendingOtp) return;
-      _stopSendingOtp();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('OTP request timed out. Check Firebase iOS setup.'),
-        ),
-      );
-    });
-
-    try {
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _savedPhoneNumber,
-        timeout: const Duration(seconds: 30),
-        verificationCompleted: (credential) async {
-          _stopSendingOtp();
-          await FirebaseAuth.instance.signInWithCredential(credential);
-          if (!mounted) return;
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => const MainScreen()),
-            (route) => false,
-          );
-        },
-        verificationFailed: (error) {
-          _stopSendingOtp();
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.message ?? 'OTP could not be sent')),
-          );
-        },
-        codeSent: (verificationId, resendToken) {
-          _stopSendingOtp();
-          if (!mounted) return;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => LoginOtpScreen(
-                phoneNumber: _savedPhoneNumber,
-                verificationId: verificationId,
-              ),
-            ),
-          );
-        },
-        codeAutoRetrievalTimeout: (verificationId) => _stopSendingOtp(),
-      );
-    } on FirebaseAuthException catch (error) {
-      _stopSendingOtp();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.message ?? 'OTP could not be sent')),
-      );
-    } catch (error) {
-      _stopSendingOtp();
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('OTP error: $error')));
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginOtpScreen(phoneNumber: _savedPhoneNumber),
+      ),
+    );
   }
 
   @override
@@ -199,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _isSendingOtp ? null : _login,
+                  onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFD6A94A),
                     foregroundColor: Colors.black,
@@ -208,12 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: Text(
-                    _isSendingOtp ? 'Sending OTP...' : 'Log in',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: const Text(
+                    'Log in',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

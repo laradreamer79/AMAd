@@ -1,20 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../main_screen.dart';
 
 class LoginOtpScreen extends StatefulWidget {
-  static const demoVerificationId = 'demo-login-otp';
   static const demoOtp = '123456';
 
   final String phoneNumber;
-  final String verificationId;
 
-  const LoginOtpScreen({
-    super.key,
-    required this.phoneNumber,
-    required this.verificationId,
-  });
+  const LoginOtpScreen({super.key, required this.phoneNumber});
 
   @override
   State<LoginOtpScreen> createState() => _LoginOtpScreenState();
@@ -27,9 +20,6 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
   );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   bool _isVerifying = false;
-
-  bool get _isDemoOtp =>
-      widget.verificationId == LoginOtpScreen.demoVerificationId;
 
   @override
   void dispose() {
@@ -53,44 +43,19 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
 
     setState(() => _isVerifying = true);
 
-    try {
-      if (_isDemoOtp) {
-        if (otp != LoginOtpScreen.demoOtp) {
-          throw const FormatException('Invalid OTP code');
-        }
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const MainScreen()),
-          (route) => false,
-        );
-        return;
-      }
-
-      final credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: otp,
-      );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      if (!mounted) return;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => const MainScreen()),
-        (route) => false,
-      );
-    } on FirebaseAuthException catch (error) {
-      if (!mounted) return;
-      setState(() => _isVerifying = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.message ?? 'Invalid OTP code')),
-      );
-    } on FormatException catch (error) {
-      if (!mounted) return;
+    if (otp != LoginOtpScreen.demoOtp) {
       setState(() => _isVerifying = false);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(error.message)));
+      ).showSnackBar(const SnackBar(content: Text('Invalid OTP code')));
+      return;
     }
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const MainScreen()),
+      (route) => false,
+    );
   }
 
   Widget _buildOtpBox(int index) {
@@ -149,13 +114,11 @@ class _LoginOtpScreenState extends State<LoginOtpScreen> {
                 'Enter the code you received by SMS.',
                 style: TextStyle(color: Colors.white54, fontSize: 12),
               ),
-              if (_isDemoOtp) ...[
-                const SizedBox(height: 8),
-                const Text(
-                  'Demo OTP: 123456.',
-                  style: TextStyle(color: Colors.white54, fontSize: 12),
-                ),
-              ],
+              const SizedBox(height: 8),
+              const Text(
+                'Demo OTP: 123456.',
+                style: TextStyle(color: Colors.white54, fontSize: 12),
+              ),
               const SizedBox(height: 28),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

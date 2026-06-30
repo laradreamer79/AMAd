@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'features/ai/ai_screen.dart';
@@ -88,9 +87,7 @@ class _MainScreenState extends State<MainScreen> {
         IconButton(
           tooltip: 'Sign out',
           icon: const Icon(Icons.logout),
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            if (!mounted) return;
+          onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (_) => const LoginScreen()),

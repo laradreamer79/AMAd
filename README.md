@@ -27,11 +27,8 @@ Current login flow:
 
 1. Enter the demo username `lara`.
 2. Enter the demo password `123456`.
-3. Firebase sends an SMS OTP to the saved phone number in `login_screen.dart`.
-4. Enter the SMS OTP from your phone.
-5. Open the main banking app.
-
-Before testing, replace `_savedPhoneNumber` in `lib/features/auth/login_screen.dart` with your real phone number in international format, for example `+9665XXXXXXXX`.
+3. Enter the demo OTP `123456`.
+4. Open the main banking app.
 
 ### Home
 
@@ -153,7 +150,7 @@ The authenticated app shell includes a floating microphone button positioned abo
 Implemented or partially implemented services:
 
 - Account overview and account opening
-- Simple login with Firebase phone OTP verification
+- Simple local demo login with OTP verification
 - Transfer flow with review, OTP, and success
 - Bill payment flow with categories, saved bills, review, OTP, and success
 - Service shortcut grid
@@ -219,6 +216,6 @@ dart format lib
 
 - This is currently a prototype with local sample data.
 - No custom backend or real payment integration is connected yet.
-- Login OTP is verified through Firebase Phone Authentication.
+- Login OTP is validated locally with demo data.
 - Transfer, account, and bill OTP screens still validate only that 6 digits are entered.
 - Most service data is hardcoded in the Flutter screens and models.
