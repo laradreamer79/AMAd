@@ -57,6 +57,15 @@ void main() {
 
       // بعد الضغط، يجب أن يظهر زر "بطاقة جديدة" بشاشة البطاقات
       expect(find.byIcon(Icons.add), findsWidgets);
+
+      await tester.tap(find.byIcon(Icons.add).last);
+      await tester.pumpAndSettle();
+      expect(find.text('Issue Card'), findsOneWidget);
+      expect(find.byTooltip('Back'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.add), findsWidgets);
     },
   );
 
