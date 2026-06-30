@@ -5,6 +5,7 @@ import '../../../core/theme/app_text_styles.dart';
 import '../../../core/i18n/lang_provider.dart';
 import '../../../core/widgets/app_header.dart';
 import '../../account/providers/account_provider.dart';
+import '../../accounts/accounts_screen.dart';
 import '../../auth/providers/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -150,6 +151,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         children: [
                           _SettingsTile(
+                            icon: Icons.account_balance_outlined,
+                            label: lang.isRTL ? 'الحسابات' : 'Accounts',
+                            trailing: const Icon(
+                              Icons.chevron_right,
+                              color: AppColors.textSecondary,
+                            ),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const AccountsScreen(),
+                              ),
+                            ),
+                          ),
+                          const Divider(height: 1, color: AppColors.cardBorder),
+                          _SettingsTile(
                             icon: Icons.language,
                             label: lang.t('language_setting'),
                             trailing: GestureDetector(
@@ -181,7 +197,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Switch(
                               value: _notificationsEnabled,
                               activeColor: AppColors.primary,
-                              onChanged: (v) => setState(() => _notificationsEnabled = v),
+                              onChanged: (v) =>
+                                  setState(() => _notificationsEnabled = v),
                             ),
                           ),
                           const Divider(height: 1, color: AppColors.cardBorder),
@@ -191,7 +208,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Switch(
                               value: _faceIdEnabled,
                               activeColor: AppColors.primary,
-                              onChanged: (v) => setState(() => _faceIdEnabled = v),
+                              onChanged: (v) =>
+                                  setState(() => _faceIdEnabled = v),
                             ),
                           ),
                         ],
@@ -209,12 +227,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: BoxDecoration(
                           color: AppColors.card,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: AppColors.error.withOpacity(0.4)),
+                          border: Border.all(
+                            color: AppColors.error.withOpacity(0.4),
+                          ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.logout, color: AppColors.error, size: 18),
+                            const Icon(
+                              Icons.logout,
+                              color: AppColors.error,
+                              size: 18,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               lang.t('logout'),
@@ -233,7 +257,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Center(
                       child: Text(
                         '${lang.t('app_version')} 1.0.0',
-                        style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                        style: const TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -251,26 +278,29 @@ class _SettingsTile extends StatelessWidget {
   final IconData icon;
   final String label;
   final Widget trailing;
+  final VoidCallback? onTap;
 
   const _SettingsTile({
     required this.icon,
     required this.label,
     required this.trailing,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.primary, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(label, style: AppTextStyles.value),
-          ),
-          trailing,
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Icon(icon, color: AppColors.primary, size: 20),
+            const SizedBox(width: 12),
+            Expanded(child: Text(label, style: AppTextStyles.value)),
+            trailing,
+          ],
+        ),
       ),
     );
   }

@@ -44,9 +44,7 @@ class AmeenApp extends StatelessWidget {
                   ? GoogleFonts.ibmPlexSansArabicTextTheme(
                       ThemeData.dark().textTheme,
                     )
-                  : GoogleFonts.interTextTheme(
-                      ThemeData.dark().textTheme,
-                    ),
+                  : GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
               scaffoldBackgroundColor: AppColors.background,
               colorScheme: ColorScheme.fromSeed(
                 seedColor: AppColors.primary,
@@ -81,8 +79,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  static final _screens = [
-    const HomeScreen(),
+  List<Widget> get _screens => [
+    HomeScreen(onSelectTab: _onTabSelected),
     const BillsScreen(),
     const CardsScreen(),
     const ProductsScreen(),
@@ -102,10 +100,17 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
+      floatingActionButton: _currentIndex == 0 || _currentIndex == 4
+          ? null
+          : FloatingActionButton(
+              heroTag: 'global-ai-assistant',
+              tooltip: lang.t('ai'),
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              onPressed: () => _onTabSelected(4),
+              child: const Icon(Icons.mic),
+            ),
       bottomNavigationBar: AnimatedBottomNav(
         currentIndex: _currentIndex,
         onTap: _onTabSelected,
