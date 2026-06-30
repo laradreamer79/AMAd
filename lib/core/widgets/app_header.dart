@@ -8,8 +8,9 @@ import '../i18n/lang_provider.dart';
 /// سفلي خفيف يفصله بصريًا عن محتوى الشاشة.
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String titleKey;
+  final bool showBack;
 
-  const AppHeader({super.key, required this.titleKey});
+  const AppHeader({super.key, required this.titleKey, this.showBack = false});
 
   @override
   Size get preferredSize => const Size.fromHeight(64);
@@ -31,6 +32,19 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         bottom: false,
         child: Row(
           children: [
+            if (showBack) ...[
+              IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                onPressed: () => Navigator.maybePop(context),
+                icon: Icon(
+                  Directionality.of(context) == TextDirection.rtl
+                      ? Icons.arrow_forward
+                      : Icons.arrow_back,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(width: 4),
+            ],
             Expanded(
               child: Text(
                 lang.t(titleKey),

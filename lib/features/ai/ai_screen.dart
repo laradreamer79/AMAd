@@ -37,11 +37,11 @@ class AiScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.background,
-      child: Column(
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Column(
         children: [
-          const AppHeader(titleKey: 'ai'),
+          const AppHeader(titleKey: 'ai', showBack: true),
           Expanded(
             child: SafeArea(
               top: false,

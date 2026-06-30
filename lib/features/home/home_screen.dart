@@ -13,8 +13,9 @@ import '../transfer/screens/transfer_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final ValueChanged<int>? onSelectTab;
+  final VoidCallback? onOpenAi;
 
-  const HomeScreen({super.key, this.onSelectTab});
+  const HomeScreen({super.key, this.onSelectTab, this.onOpenAi});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +161,7 @@ class HomeScreen extends StatelessWidget {
 
                     const SizedBox(height: 24),
 
-                    _AskAmeenBar(lang: lang, onTap: () => onSelectTab?.call(4)),
+                    _AskAmeenBar(lang: lang, onTap: onOpenAi ?? () {}),
 
                     const SizedBox(height: 30),
 

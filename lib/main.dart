@@ -6,6 +6,7 @@ import 'features/home/home_screen.dart';
 import 'features/products/products_screen.dart';
 import 'features/cards/providers/cards_provider.dart';
 import 'features/cards/screens/cards_screen.dart';
+import 'core/navigation/app_page_route.dart';
 import 'core/theme/app_colors.dart';
 import 'core/i18n/lang_provider.dart';
 import 'features/account/providers/account_provider.dart';
@@ -80,11 +81,10 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   List<Widget> get _screens => [
-    HomeScreen(onSelectTab: _onTabSelected),
+    HomeScreen(onSelectTab: _onTabSelected, onOpenAi: _openAi),
     const BillsScreen(),
     const CardsScreen(),
     const ProductsScreen(),
-    const AiScreen(),
     const ProfileScreen(),
   ];
 
@@ -94,6 +94,10 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _openAi() {
+    Navigator.push(context, AppPageRoute(builder: (_) => const AiScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final lang = context.watch<LangProvider>();
@@ -101,16 +105,15 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: IndexedStack(index: _currentIndex, children: _screens),
-      floatingActionButton: _currentIndex == 0 || _currentIndex == 4
-          ? null
-          : FloatingActionButton(
-              heroTag: 'global-ai-assistant',
-              tooltip: lang.t('ai'),
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              onPressed: () => _onTabSelected(4),
-              child: const Icon(Icons.mic),
-            ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'global-ai-assistant',
+        tooltip: lang.t('ai'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        onPressed: _openAi,
+        child: const Icon(Icons.mic),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: AnimatedBottomNav(
         currentIndex: _currentIndex,
         onTap: _onTabSelected,
@@ -119,7 +122,6 @@ class _MainScreenState extends State<MainScreen> {
           NavItemData(icon: Icons.receipt_long, label: lang.t('bills')),
           NavItemData(icon: Icons.credit_card, label: lang.t('cards')),
           NavItemData(icon: Icons.widgets, label: lang.t('products')),
-          NavItemData(icon: Icons.mic, label: lang.t('ai')),
           NavItemData(icon: Icons.person_outline, label: lang.t('profile')),
         ],
       ),

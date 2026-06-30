@@ -88,9 +88,17 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Products Screen'), findsOneWidget);
 
+    final aiNavItem = find.descendant(
+      of: find.byType(AnimatedBottomNav),
+      matching: find.byIcon(Icons.mic),
+    );
+    expect(aiNavItem, findsNothing);
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+
     await tester.tap(find.byType(FloatingActionButton));
     await tester.pumpAndSettle();
     expect(find.text('Finance'), findsOneWidget);
+    expect(find.byTooltip('Back'), findsOneWidget);
   });
 
   testWidgets('Saved bill opens the complete payment flow', (
