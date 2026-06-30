@@ -11,12 +11,14 @@ import '../../../core/navigation/app_page_route.dart';
 
 /// شاشة "بطاقاتي" — تُستخدم كأحد تبويبات التطبيق الرئيسية.
 class CardsScreen extends StatelessWidget {
-  const CardsScreen({super.key});
+  final VoidCallback? onBack;
+
+  const CardsScreen({super.key, this.onBack});
 
   void _openIssueCardWizard(BuildContext context) {
-    Navigator.of(context).push(
-      AppModalRoute(builder: (_) => const IssueCardScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(AppModalRoute(builder: (_) => const IssueCardScreen()));
   }
 
   @override
@@ -30,7 +32,7 @@ class CardsScreen extends StatelessWidget {
         color: AppColors.background,
         child: Column(
           children: [
-            AppHeader(titleKey: 'my_cards'),
+            AppHeader(titleKey: 'my_cards', showBack: true, onBack: onBack),
             Expanded(
               child: SafeArea(
                 top: false,
@@ -38,9 +40,7 @@ class CardsScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   children: [
                     ...provider.issuedCards.map(
-                      (card) => IssuedCardTile(
-                        card: card,
-                      ),
+                      (card) => IssuedCardTile(card: card),
                     ),
                     AddCardTile(onTap: () => _openIssueCardWizard(context)),
                   ],

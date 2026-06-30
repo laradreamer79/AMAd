@@ -57,6 +57,7 @@ void main() {
 
       // بعد الضغط، يجب أن يظهر زر "بطاقة جديدة" بشاشة البطاقات
       expect(find.byIcon(Icons.add), findsWidgets);
+      expect(find.byTooltip('Back'), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.add).last);
       await tester.pumpAndSettle();
@@ -66,6 +67,10 @@ void main() {
       await tester.tap(find.byTooltip('Back'));
       await tester.pumpAndSettle();
       expect(find.byIcon(Icons.add), findsWidgets);
+
+      await tester.tap(find.byTooltip('Back'));
+      await tester.pumpAndSettle();
+      expect(find.text('Good afternoon'), findsOneWidget);
     },
   );
 

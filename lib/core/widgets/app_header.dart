@@ -9,8 +9,14 @@ import '../i18n/lang_provider.dart';
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   final String titleKey;
   final bool showBack;
+  final VoidCallback? onBack;
 
-  const AppHeader({super.key, required this.titleKey, this.showBack = false});
+  const AppHeader({
+    super.key,
+    required this.titleKey,
+    this.showBack = false,
+    this.onBack,
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(64);
@@ -34,7 +40,11 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           if (showBack) ...[
             IconButton(
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () => Navigator.maybePop(context),
+              onPressed:
+                  onBack ??
+                  () {
+                    Navigator.maybePop(context);
+                  },
               icon: Icon(
                 Directionality.of(context) == TextDirection.rtl
                     ? Icons.arrow_forward

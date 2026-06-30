@@ -84,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> get _screens => [
     HomeScreen(onSelectTab: _onTabSelected),
     const BillsScreen(),
-    const CardsScreen(),
+    CardsScreen(onBack: () => _onTabSelected(0)),
     const ProductsScreen(),
     const ServicesScreen(),
     const ProfileScreen(),
