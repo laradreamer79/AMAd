@@ -18,47 +18,45 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final lang = context.watch<LangProvider>();
+    final topInset = MediaQuery.paddingOf(context).top;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 64,
+      padding: EdgeInsets.fromLTRB(20, topInset, 20, 0),
+      height: 64 + topInset,
       decoration: const BoxDecoration(
         color: AppColors.background,
         border: Border(
           bottom: BorderSide(color: AppColors.cardBorder, width: 0.6),
         ),
       ),
-      child: SafeArea(
-        bottom: false,
-        child: Row(
-          children: [
-            if (showBack) ...[
-              IconButton(
-                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                onPressed: () => Navigator.maybePop(context),
-                icon: Icon(
-                  Directionality.of(context) == TextDirection.rtl
-                      ? Icons.arrow_forward
-                      : Icons.arrow_back,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(width: 4),
-            ],
-            Expanded(
-              child: Text(
-                lang.t(titleKey),
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 21,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.3,
-                ),
+      child: Row(
+        children: [
+          if (showBack) ...[
+            IconButton(
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () => Navigator.maybePop(context),
+              icon: Icon(
+                Directionality.of(context) == TextDirection.rtl
+                    ? Icons.arrow_forward
+                    : Icons.arrow_back,
+                color: AppColors.textPrimary,
               ),
             ),
-            _LanguageToggleButton(lang: lang),
+            const SizedBox(width: 4),
           ],
-        ),
+          Expanded(
+            child: Text(
+              lang.t(titleKey),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 21,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.3,
+              ),
+            ),
+          ),
+          _LanguageToggleButton(lang: lang),
+        ],
       ),
     );
   }
