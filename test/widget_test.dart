@@ -80,6 +80,13 @@ void main() {
     await tester.tap(homeTab);
     await tester.pumpAndSettle();
 
+    final homeScroll = find.descendant(
+      of: find.byType(HomeScreen),
+      matching: find.byType(SingleChildScrollView),
+    );
+    await tester.drag(homeScroll, const Offset(0, -120));
+    await tester.pumpAndSettle();
+
     final productsShortcut = find.descendant(
       of: find.byType(HomeScreen),
       matching: find.text('Products'),

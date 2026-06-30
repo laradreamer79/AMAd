@@ -5,7 +5,6 @@ class AppStrings {
     'en': {
       // Common
       'good_afternoon': 'Good afternoon',
-      'ask_ameen': 'Ask Ameen',
       'transfer': 'Transfer',
       'bills': 'Bills',
       'cards': 'Cards',
@@ -110,7 +109,8 @@ class AppStrings {
       'enter_pin_desc': 'Enter your PIN to access your account',
       'incorrect_pin': 'Incorrect PIN, please try again',
       'forgot_pin': 'Forgot PIN?',
-      'forgot_pin_message': 'Please contact customer support to reset your PIN.',
+      'forgot_pin_message':
+          'Please contact customer support to reset your PIN.',
       'ok': 'OK',
 
       // Profile / Settings
@@ -156,7 +156,6 @@ class AppStrings {
     'ar': {
       // Common
       'good_afternoon': 'مساء الخير',
-      'ask_ameen': 'اسأل أمين',
       'transfer': 'تحويل',
       'bills': 'الفواتير',
       'cards': 'البطاقات',
@@ -191,8 +190,7 @@ class AppStrings {
       'review_details_title': 'مراجعة التفاصيل',
       'review_info_text':
           'يرجى التحقق من صحة البيانات قبل تأكيد إصدار البطاقة.',
-      'confirm_data_text':
-          'أؤكد صحة البيانات وأنها تطابق المعلومات المطلوبة.',
+      'confirm_data_text': 'أؤكد صحة البيانات وأنها تطابق المعلومات المطلوبة.',
       'verify_identity': 'التحقق من هويتك',
       'otp_desc':
           'فضلاً ادخل الرمز المكون من 4 أرقام المرسل لك من أمين عبر رسالة نصية',

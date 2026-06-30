@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   List<Widget> get _screens => [
-    HomeScreen(onSelectTab: _onTabSelected, onOpenAi: _openAi),
+    HomeScreen(onSelectTab: _onTabSelected),
     const BillsScreen(),
     const CardsScreen(),
     const ProductsScreen(),
@@ -113,7 +113,7 @@ class _MainScreenState extends State<MainScreen> {
         onPressed: _openAi,
         child: const Icon(Icons.mic),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNav(
         currentIndex: _currentIndex,
         onTap: _onTabSelected,

@@ -13,9 +13,8 @@ import '../transfer/screens/transfer_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final ValueChanged<int>? onSelectTab;
-  final VoidCallback? onOpenAi;
 
-  const HomeScreen({super.key, this.onSelectTab, this.onOpenAi});
+  const HomeScreen({super.key, this.onSelectTab});
 
   @override
   Widget build(BuildContext context) {
@@ -159,10 +158,6 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
 
-                    const SizedBox(height: 24),
-
-                    _AskAmeenBar(lang: lang, onTap: onOpenAi ?? () {}),
-
                     const SizedBox(height: 30),
 
                     Text('Offers for you', style: AppTextStyles.sectionTitle),
@@ -285,53 +280,6 @@ class _BalanceCard extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AskAmeenBar extends StatelessWidget {
-  final LangProvider lang;
-  final VoidCallback onTap;
-
-  const _AskAmeenBar({required this.lang, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [AppColors.primary.withOpacity(0.14), AppColors.card],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.cardBorder),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 38,
-              height: 38,
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: const Icon(Icons.mic, color: Colors.white, size: 18),
-            ),
-            const SizedBox(width: 14),
-            Text(
-              lang.t('ask_ameen'),
-              style: AppTextStyles.value.copyWith(fontSize: 15),
             ),
           ],
         ),
