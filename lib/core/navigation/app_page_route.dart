@@ -1,40 +1,31 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// مسار انتقال مخصص يجمع بين الانزلاق الخفيف (Slide) والتلاشي (Fade)
-/// بمنحنى حركة سلس، بدل الانتقال الافتراضي الجاف لـ MaterialPageRoute.
-/// يُستخدم بكل أماكن التنقل الرئيسية بالتطبيق لإحساس أكثر احترافية.
-class AppPageRoute<T> extends PageRouteBuilder<T> {
-  AppPageRoute({required WidgetBuilder builder})
-      : super(
-          transitionDuration: const Duration(milliseconds: 380),
-          reverseTransitionDuration: const Duration(milliseconds: 320),
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              builder(context),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            final curved = CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeInCubic,
-            );
+/// مسار انتقال رئيسي يعتمد على CupertinoRouteTransitionMixin عشان يفعّل
+/// إيماءة السحب للرجوع (swipe-to-go-back) بشكل أصلي على iOS، مع الحفاظ
+/// على مدة انتقال متسقة مع هوية التطبيق.
+class AppPageRoute<T> extends PageRoute<T> with CupertinoRouteTransitionMixin<T> {
+  AppPageRoute({required this.builder, this.routeTitle});
 
-            final slide = Tween<Offset>(
-              begin: const Offset(0, 0.06),
-              end: Offset.zero,
-            ).animate(curved);
+  final WidgetBuilder builder;
+  final String? routeTitle;
 
-            return FadeTransition(
-              opacity: curved,
-              child: SlideTransition(
-                position: slide,
-                child: child,
-              ),
-            );
-          },
-        );
+  @override
+  Widget buildContent(BuildContext context) => builder(context);
+
+  @override
+  String? get title => routeTitle;
+
+  @override
+  bool get maintainState => true;
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 380);
 }
 
 /// مسار انتقال "Modal" بحركة صعود من الأسفل بانحناء أنعم — مناسب
 /// للمعالجات (Wizards) ونوافذ التدفق الكامل مثل إصدار بطاقة أو تحويل.
+/// بدون إيماءة سحب رجوع (مقصودة، عشان ما يقفل المستخدم التدفق بالخطأ).
 class AppModalRoute<T> extends PageRouteBuilder<T> {
   AppModalRoute({required WidgetBuilder builder})
       : super(

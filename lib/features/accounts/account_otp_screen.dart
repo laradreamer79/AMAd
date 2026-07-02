@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/i18n/lang_provider.dart';
+import '../../core/navigation/app_page_route.dart';
+import '../../core/widgets/app_header.dart';
+import '../cards/widgets/primary_pill_button.dart';
 import 'account_application.dart';
 import 'account_success_screen.dart';
 
@@ -18,6 +24,7 @@ class _AccountOtpScreenState extends State<AccountOtpScreen> {
     (_) => TextEditingController(),
   );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  bool _isVerifying = false;
 
   @override
   void dispose() {
@@ -30,13 +37,17 @@ class _AccountOtpScreenState extends State<AccountOtpScreen> {
     super.dispose();
   }
 
-  void _verify() {
+  Future<void> _verify() async {
     final otp = _otpControllers.map((controller) => controller.text).join();
     if (otp.length != 6) return;
 
+    setState(() => _isVerifying = true);
+    await Future.delayed(const Duration(milliseconds: 700));
+    if (!mounted) return;
+
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
+      AppPageRoute(
         builder: (_) => AccountSuccessScreen(application: widget.application),
       ),
     );
@@ -44,12 +55,12 @@ class _AccountOtpScreenState extends State<AccountOtpScreen> {
 
   Widget _buildOtpBox(int index) {
     return Container(
-      width: 50,
-      height: 50,
+      width: 46,
+      height: 54,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white30),
-        borderRadius: BorderRadius.circular(12),
-        color: const Color(0xFF141B24),
+        border: Border.all(color: AppColors.cardBorder),
+        borderRadius: BorderRadius.circular(14),
+        color: AppColors.inputFill,
       ),
       child: TextField(
         controller: _otpControllers[index],
@@ -62,8 +73,9 @@ class _AccountOtpScreenState extends State<AccountOtpScreen> {
           border: InputBorder.none,
           contentPadding: EdgeInsets.zero,
         ),
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: AppTextStyles.stepTitle.copyWith(fontSize: 22),
         onChanged: (value) {
+          setState(() {});
           if (value.isNotEmpty && index < 5) {
             _focusNodes[index + 1].requestFocus();
           } else if (value.isEmpty && index > 0) {
@@ -76,41 +88,46 @@ class _AccountOtpScreenState extends State<AccountOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('OTP Verification')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Enter the 6-digit code sent to your device'),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(6, (index) => _buildOtpBox(index)),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _verify,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD6A94A),
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'Verify',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    final lang = context.watch<LangProvider>();
+    final otpComplete =
+        _otpControllers.every((controller) => controller.text.isNotEmpty);
+
+    return Directionality(
+      textDirection: lang.direction,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Column(
+          children: [
+            AppHeader(titleKey: 'otp_verification'),
+            Expanded(
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang.t('account_otp_subtitle'),
+                        style: AppTextStyles.stepSubtitle,
+                      ),
+                      const SizedBox(height: 28),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(6, (index) => _buildOtpBox(index)),
+                      ),
+                      const Spacer(),
+                      PrimaryPillButton(
+                        label: lang.t('verify'),
+                        isLoading: _isVerifying,
+                        onPressed: otpComplete ? _verify : null,
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

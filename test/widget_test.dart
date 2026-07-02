@@ -3,6 +3,7 @@
 // بكل تبويباته بشكل صحيح.
 
 import 'package:flutter/material.dart';
+import 'package:ameen/features/products/products_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ameen/main.dart';
@@ -107,7 +108,7 @@ void main() {
     );
     await tester.tap(productsShortcut);
     await tester.pumpAndSettle();
-    expect(find.text('Products Screen'), findsOneWidget);
+    expect(find.byType(ProductsScreen), findsOneWidget);
 
     final aiNavItem = find.descendant(
       of: find.byType(AnimatedBottomNav),
@@ -170,9 +171,14 @@ void main() {
 
     await tester.tap(find.text('SA •••• •••• •••• 9012'));
     await tester.pumpAndSettle();
-    expect(find.text('Open new account'), findsOneWidget);
+    expect(find.text('Open New Account'), findsOneWidget);
 
-    await tester.tap(find.text('Open new account'));
+    await tester.scrollUntilVisible(
+      find.text('Open New Account'),
+      50,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Open New Account'));
     await tester.pumpAndSettle();
 
     final dropdowns = find.byType(DropdownButtonFormField<String>);
