@@ -14,6 +14,7 @@ import 'features/transfer/providers/transfer_provider.dart';
 import 'features/auth/providers/auth_provider.dart';
 import 'features/auth/screens/lock_screen.dart';
 import 'features/profile/screens/profile_screen.dart';
+import 'features/bills/providers/bills_provider.dart';
 import 'features/services/services_screen.dart';
 import 'core/widgets/animated_bottom_nav.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +35,7 @@ class AmeenApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => TransferProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => BillsProvider()),
       ],
       child: Consumer<LangProvider>(
         builder: (context, langProvider, _) {

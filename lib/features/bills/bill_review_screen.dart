@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/i18n/lang_provider.dart';
+import '../../core/navigation/app_page_route.dart';
+import '../../core/widgets/app_header.dart';
+import '../cards/widgets/primary_pill_button.dart';
 import 'bill_otp_screen.dart';
 import 'bill_payment.dart';
 
@@ -10,56 +16,55 @@ class BillReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Review')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Confirm bill payment',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              _ReviewRow(label: 'Biller', value: payment.bill.biller),
-              _ReviewRow(label: 'Bill', value: payment.bill.name),
-              _ReviewRow(
-                label: 'Bill number',
-                value: payment.bill.accountNumber,
-              ),
-              _ReviewRow(label: 'Pay from', value: payment.account),
-              _ReviewRow(label: 'Amount', value: payment.amount),
-              _ReviewRow(label: 'Due date', value: payment.bill.dueDate),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BillOtpScreen(payment: payment),
+    final lang = context.watch<LangProvider>();
+
+    return Directionality(
+      textDirection: lang.direction,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Column(
+          children: [
+            AppHeader(titleKey: 'review'),
+            Expanded(
+              child: SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(lang.t('bill_info'), style: AppTextStyles.stepTitle),
+                      const SizedBox(height: 16),
+                      _ReviewRow(label: lang.t('biller'), value: payment.bill.biller),
+                      _ReviewRow(label: lang.t('bills'), value: payment.bill.name),
+                      _ReviewRow(
+                        label: lang.t('bill_number'),
+                        value: payment.bill.accountNumber,
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD6A94A),
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'Confirm',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      _ReviewRow(label: lang.t('pay_from'), value: payment.account),
+                      _ReviewRow(label: lang.t('bill_amount'), value: payment.amount),
+                      _ReviewRow(
+                        label: lang.t('due_date'),
+                        value: payment.bill.dueDate,
+                      ),
+                      const SizedBox(height: 28),
+                      PrimaryPillButton(
+                        label: lang.t('confirm'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            AppPageRoute(
+                              builder: (_) => BillOtpScreen(payment: payment),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -79,20 +84,20 @@ class _ReviewRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF141B24),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white10),
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.cardBorder),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(label, style: AppTextStyles.label),
           const SizedBox(width: 12),
           Flexible(
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppTextStyles.value,
             ),
           ),
         ],

@@ -6,13 +6,19 @@ import '../../core/i18n/lang_provider.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/widgets/app_header.dart';
 import '../cards/widgets/primary_pill_button.dart';
-import 'account_application.dart';
-import 'account_otp_screen.dart';
+import 'product_application.dart';
+import 'product_confirmation_screen.dart';
+import 'products_screen.dart';
 
-class ReviewAccountScreen extends StatelessWidget {
-  final AccountApplication application;
+class ProductReviewScreen extends StatelessWidget {
+  final BankProduct product;
+  final ProductApplication application;
 
-  const ReviewAccountScreen({super.key, required this.application});
+  const ProductReviewScreen({
+    super.key,
+    required this.product,
+    required this.application,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,30 +39,32 @@ class ReviewAccountScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(lang.t('review_account_details'),
+                      Text(lang.t('application_review'),
                           style: AppTextStyles.stepTitle),
                       const SizedBox(height: 16),
                       _ReviewRow(
-                        label: lang.t('account_type'),
-                        value: application.accountType,
+                        label: lang.t('product_type'),
+                        value: lang.isRTL ? product.titleAr : product.titleEn,
                       ),
                       _ReviewRow(
-                        label: lang.t('currency'),
-                        value: application.currency,
+                        label: lang.t('requested_amount'),
+                        value: application.amount,
                       ),
                       _ReviewRow(
-                        label: lang.t('short_name'),
-                        value: application.shortName,
+                        label: lang.t('duration'),
+                        value: application.duration,
                       ),
                       const SizedBox(height: 28),
                       PrimaryPillButton(
-                        label: lang.t('confirm'),
+                        label: lang.t('confirm_submit'),
                         onPressed: () {
                           Navigator.push(
                             context,
                             AppPageRoute(
-                              builder: (_) =>
-                                  AccountOtpScreen(application: application),
+                              builder: (_) => ProductConfirmationScreen(
+                                product: product,
+                                application: application,
+                              ),
                             ),
                           );
                         },

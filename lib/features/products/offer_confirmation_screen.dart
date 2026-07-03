@@ -4,12 +4,12 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/i18n/lang_provider.dart';
 import '../cards/widgets/primary_pill_button.dart';
-import 'bill_payment.dart';
+import 'products_screen.dart';
 
-class BillSuccessScreen extends StatelessWidget {
-  final BillPayment payment;
+class OfferConfirmationScreen extends StatelessWidget {
+  final OfferItem offer;
 
-  const BillSuccessScreen({super.key, required this.payment});
+  const OfferConfirmationScreen({super.key, required this.offer});
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +38,19 @@ class BillSuccessScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    lang.t('bill_paid_success'),
+                    lang.t('offer_activated'),
                     style: AppTextStyles.stepTitle,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${payment.bill.name} ${lang.t('paid_for')} ${payment.amount}',
+                    lang.isRTL ? offer.titleAr : offer.titleEn,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.value,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    lang.t('offer_activated_desc'),
                     textAlign: TextAlign.center,
                     style: AppTextStyles.label,
                   ),

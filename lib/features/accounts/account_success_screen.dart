@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../core/i18n/lang_provider.dart';
+import '../cards/widgets/primary_pill_button.dart';
 import 'account_application.dart';
 
 class AccountSuccessScreen extends StatelessWidget {
@@ -9,38 +13,52 @@ class AccountSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Success')),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.check_circle, color: Colors.green, size: 80),
-                const SizedBox(height: 16),
-                const Text(
-                  'Account Opened Successfully',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '${application.shortName} • ${application.currency}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.popUntil(context, (route) => route.isFirst),
-                    child: const Text('Done'),
+    final lang = context.watch<LangProvider>();
+
+    return Directionality(
+      textDirection: lang.direction,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(28),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: AppColors.success.withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.check_rounded,
+                        color: AppColors.success, size: 48),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  Text(
+                    lang.t('account_opened_success'),
+                    style: AppTextStyles.stepTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${application.shortName} • ${application.currency}',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.label,
+                  ),
+                  const SizedBox(height: 28),
+                  SizedBox(
+                    width: double.infinity,
+                    child: PrimaryPillButton(
+                      label: lang.t('done'),
+                      onPressed: () =>
+                          Navigator.popUntil(context, (route) => route.isFirst),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
