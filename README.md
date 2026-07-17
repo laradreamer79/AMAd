@@ -2,6 +2,9 @@
 
 Ameen is an Arabic-first digital banking platform that combines a modern Flutter mobile experience with an intelligent backend agent service. It is designed to help customers manage accounts, pay bills, review products, and interact with a secure AI banking assistant while protecting money flows with a risk-gated decision engine.
 
+## PPT Slides
+https://drive.google.com/drive/folders/1l1b_-pHp1iYvrno-BH9tMKIbD-VFR7XA
+
 ## Live Demo
 https://www.youtube.com/shorts/UtdNu5JfWjQ
 
