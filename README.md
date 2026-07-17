@@ -22,6 +22,31 @@ A third component protects transaction integrity:
 - Secure envelope contract between backend and frontend for safe tool routing
 - Mock banking backend for local development and testing
 
+## Example Use Cases
+
+Ameen is trained to handle convenient banking requests in Arabic, such as:
+
+- حوال 300 ريال لعمر
+- حوال 500 ريال لفاطمة بسبب فاتورة
+- حوال 200 ريال لسارة، رقم حسابها SA1234 ← مستفيد جديد (مو محفوظ)
+- ادفع فاتورة الكهرباء
+- ادفع فاتورة الجوال
+- ادفع مخالفة المرور
+- ادفع فاتورة الجوازات
+- أبي بطاقة Visa Signature
+- أبي بطاقة mada
+- أصدِر لي بطاقة Visa Platinum مربوطة بحسابي
+- أبي أفتح حساب توفير
+- افتح لي حساب جاري باسم "حساب الطوارئ"
+- وش رصيدي؟
+- ورّيني حساباتي
+- وش المستفيدين المحفوظين عندي؟
+- وش فواتيري؟
+- ورّيني آخر معاملاتي
+- وش المنتجات المتوفرة؟ (بطاقات/تمويل/حسابات)
+
+Use these prompts to test the AI assistant flow and verify how the backend routes transfers, bill payments, product requests, and account inquiries.
+
 ## Architecture
 
 - `lib/`: Flutter application and UI screens
