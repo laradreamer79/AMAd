@@ -1,0 +1,17 @@
+# Local test before any server deploy:
+#   AMEEN_MOCK=1 docker compose up --build       (no keys/infra needed)
+#   AMEEN_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-... docker compose up --build
+#   AMEEN_PROVIDER=openrouter OPENROUTER_API_KEY=... AMEEN_MODEL=... docker compose up --build
+services:
+  agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      AMEEN_MOCK: ${AMEEN_MOCK:-0}
+      AMEEN_PROVIDER: ${AMEEN_PROVIDER:-anthropic}
+      AMEEN_MODEL: ${AMEEN_MODEL:-claude-sonnet-5}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      REDIS_URL: ${REDIS_URL:-redis://localhost:6379/0}
+      DATABASE_URL: ${DATABASE_URL:-}

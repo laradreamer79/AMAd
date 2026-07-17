@@ -103,6 +103,26 @@ const _products = [
   ),
 ];
 
+/// يبحث عن منتج بنكي بالاسم (عربي أو إنجليزي، مطابقة جزئية) — يُستخدم من
+/// وحدة الذكاء الاصطناعي (features/ai/envelope_router.dart) لتجهيز شاشة
+/// مراجعة الطلب دون الحاجة لتكرار قائمة المنتجات في مكان ثاني.
+BankProduct? findProductByTitle(String query) {
+  final q = query.trim().toLowerCase();
+  if (q.isEmpty) return null;
+  for (final p in _products) {
+    if (q == p.titleEn.toLowerCase() || q == p.titleAr) return p;
+  }
+  for (final p in _products) {
+    if (p.titleEn.toLowerCase().contains(q) ||
+        p.titleAr.contains(q) ||
+        q.contains(p.titleEn.toLowerCase()) ||
+        q.contains(p.titleAr)) {
+      return p;
+    }
+  }
+  return null;
+}
+
 class OfferItem {
   final String titleEn;
   final String titleAr;

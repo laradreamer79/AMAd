@@ -37,6 +37,9 @@ dependencies:
   provider: ^6.1.5+1
   google_fonts: ^8.1.0
 
+  # WebSocket client for the Ameen AI agent service (features/ai).
+  web_socket_channel: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

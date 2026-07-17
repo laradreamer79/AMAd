@@ -5,6 +5,8 @@ import '../../core/i18n/lang_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/widgets/app_header.dart';
+import 'ai_service.dart';
+import 'envelope_router.dart';
 
 class AiScreen extends StatefulWidget {
   const AiScreen({super.key});
@@ -16,29 +18,30 @@ class AiScreen extends StatefulWidget {
 class _AiScreenState extends State<AiScreen> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
+  final _service = AiService();
   final List<_ChatMessage> _messages = [
     const _ChatMessage(textKey: 'ai_welcome', isUser: false),
   ];
 
+  String? _statusText;
+  bool _streaming = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _service.connect();
+    _service.events.listen(_handleEvent);
+  }
+
   @override
   void dispose() {
+    _service.dispose();
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  void _send([String? suggestedText]) {
-    final lang = context.read<LangProvider>();
-    final text = (suggestedText ?? _controller.text).trim();
-    if (text.isEmpty) return;
-
-    setState(() {
-      _messages
-        ..add(_ChatMessage(text: text, isUser: true))
-        ..add(_ChatMessage(text: lang.t('ai_demo_response'), isUser: false));
-      _controller.clear();
-    });
-
+  void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients) return;
       _scrollController.animateTo(
@@ -47,6 +50,57 @@ class _AiScreenState extends State<AiScreen> {
         curve: Curves.easeOut,
       );
     });
+  }
+
+  void _handleEvent(AiEvent event) {
+    switch (event.type) {
+      case 'status':
+        setState(() => _statusText = event.message);
+      case 'token':
+        setState(() {
+          _statusText = null;
+          if (_streaming && _messages.isNotEmpty && !_messages.last.isUser) {
+            final last = _messages.removeLast();
+            _messages.add(_ChatMessage(
+              text: (last.text ?? '') + event.text,
+              isUser: false,
+            ));
+          } else {
+            _streaming = true;
+            _messages.add(_ChatMessage(text: event.text, isUser: false));
+          }
+        });
+        _scrollToBottom();
+      case 'envelope':
+        EnvelopeRouter.route(context, event.envelope);
+      case 'done':
+        setState(() {
+          _statusText = null;
+          _streaming = false;
+        });
+      case 'error':
+        setState(() {
+          _statusText = null;
+          _streaming = false;
+          _messages.add(_ChatMessage(text: event.message, isUser: false));
+        });
+        _scrollToBottom();
+      case 'disconnected':
+        setState(() => _statusText = 'انقطع الاتصال بالمساعد...');
+    }
+  }
+
+  void _send([String? suggestedText]) {
+    final text = (suggestedText ?? _controller.text).trim();
+    if (text.isEmpty) return;
+
+    setState(() {
+      _messages.add(_ChatMessage(text: text, isUser: true));
+      _streaming = false;
+      _controller.clear();
+    });
+    _scrollToBottom();
+    _service.send(text);
   }
 
   @override
@@ -63,6 +117,20 @@ class _AiScreenState extends State<AiScreen> {
       body: Column(
         children: [
           const AppHeader(titleKey: 'ai', showBack: true),
+          if (_statusText != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  _statusText!,
+                  style: AppTextStyles.value.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
           Expanded(
             child: ListView.separated(
               controller: _scrollController,
