@@ -26,8 +26,8 @@ A third component protects transaction integrity:
 
 Ameen is trained to handle convenient banking requests in Arabic, such as:
 
-- حوال 300 ريال لعمر
-- حوال 500 ريال لفاطمة بسبب فاتورة
+- حول 300 ريال لعمر
+- حول 500 ريال لفاطمة بسبب فاتورة
 - حوال 200 ريال لسارة، رقم حسابها SA1234 ← مستفيد جديد (مو محفوظ)
 - ادفع فاتورة الكهرباء
 - ادفع فاتورة الجوال
